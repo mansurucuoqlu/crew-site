@@ -1,4 +1,5 @@
 import ConnectButton from "@/components/ConnectButton";
+import HolderStatus from "@/components/HolderStatus";
 
 export default function Home() {
   return (
@@ -6,6 +7,7 @@ export default function Home() {
       <h1 className="text-5xl font-bold">$CREW</h1>
       <p className="text-lg text-gray-400">No dev. No boss. Just the Crew.</p>
       <ConnectButton />
+      <HolderStatus />
     </main>
   );
 }
