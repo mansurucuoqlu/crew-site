@@ -9,9 +9,14 @@ export default function Home() {
       <p className="text-lg text-gray-400">No dev. No boss. Just the Crew.</p>
       <ConnectButton />
       <HolderStatus />
-      <Link href="/contest" className="p-3 rounded bg-purple-600 font-bold">
-        Meme contest
-      </Link>
+      <div className="flex gap-4">
+        <Link href="/contest" className="p-3 rounded bg-purple-600 font-bold">
+          Meme contest
+        </Link>
+        <Link href="/treasury" className="p-3 rounded border border-purple-600 font-bold">
+          Treasury
+        </Link>
+      </div>
     </main>
   );
 }

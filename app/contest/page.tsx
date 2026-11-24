@@ -7,9 +7,10 @@ import ContestView, { type Contest, type Meme } from "@/components/ContestView";
 export default function ContestPage() {
   return (
     <main className="min-h-screen flex flex-col items-center gap-6 bg-black text-white p-4">
-      <Link href="/" className="self-start text-sm text-gray-400 hover:text-white">
-        ← Home
-      </Link>
+      <nav className="self-start flex gap-4 text-sm text-gray-400">
+        <Link href="/" className="hover:text-white">← Home</Link>
+        <Link href="/treasury" className="hover:text-white">Treasury</Link>
+      </nav>
       <Suspense fallback={<p className="text-gray-400">Loading contest...</p>}>
         <CurrentContest />
       </Suspense>
