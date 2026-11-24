@@ -49,36 +49,51 @@ export default function SubmitPage() {
     }
   }
 
+  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-neon" : "text-muted";
+
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-6 bg-black text-white p-4">
-      <h1 className="text-4xl font-bold">Submit your meme</h1>
-      <ConnectButton />
+    <main className="page">
+      <header className="flex flex-col items-center gap-2 text-center">
+        <span className="tag tag-green"><span className="led" /> Weekly contest</span>
+        <h1 className="font-display text-3xl font-extrabold text-white sm:text-5xl">
+          Submit your <span className="text-neon text-glow">meme</span>
+        </h1>
+        <p className="text-muted">One meme per contest. A mod approves it before it shows up.</p>
+      </header>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm">
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/gif"
-          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          className="text-sm"
-        />
-        <input
-          type="text"
-          placeholder="Caption (optional)"
-          maxLength={200}
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          className="p-2 rounded bg-gray-900 border border-gray-700"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="p-3 rounded bg-purple-600 font-bold disabled:opacity-50"
-        >
-          {loading ? "Working..." : "Submit meme"}
-        </button>
-      </form>
+      <div className="panel flex w-full max-w-md flex-col gap-5 p-6">
+        <div className="flex justify-center">
+          <ConnectButton />
+        </div>
 
-      {status && <p className="text-center">{status}</p>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-muted">Image (JPG, PNG or GIF, max 4 MB)</span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/gif"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              className="field text-sm"
+            />
+          </label>
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-muted">Caption</span>
+            <input
+              type="text"
+              placeholder="Caption (optional)"
+              maxLength={200}
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="field"
+            />
+          </label>
+          <button type="submit" disabled={loading} className="btn btn-primary mt-2">
+            {loading ? "Working..." : "Submit meme"}
+          </button>
+        </form>
+
+        {status && <p className={`text-center font-semibold ${statusTone}`}>{status}</p>}
+      </div>
     </main>
   );
 }

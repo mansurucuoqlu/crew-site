@@ -94,59 +94,61 @@ export default function ModPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center gap-6 bg-black text-white p-4">
-      <h1 className="text-4xl font-bold mt-8">Mod queue</h1>
-      <ConnectButton />
+    <main className="page">
+      <header className="flex flex-col items-center gap-2 text-center">
+        <span className="tag tag-red"><span className="led" /> Mods only</span>
+        <h1 className="font-display text-3xl font-extrabold text-white sm:text-5xl">
+          Mod <span className="text-neon text-glow">queue</span>
+        </h1>
+      </header>
 
-      {!auth ? (
-        <button
-          onClick={signIn}
-          disabled={!publicKey}
-          className="p-3 rounded bg-purple-600 font-bold disabled:opacity-50"
-        >
-          Sign in as mod
-        </button>
-      ) : (
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-400">Signed in as {shortWallet(auth.wallet)}</span>
-          <button
-            onClick={() => loadPending(auth)}
-            disabled={loading}
-            className="px-4 py-2 rounded bg-purple-600 font-bold disabled:opacity-50"
-          >
-            {loading ? "Loading..." : "Refresh"}
+      <div className="panel flex w-full max-w-md flex-col items-center gap-4 p-6">
+        <ConnectButton />
+        {!auth ? (
+          <button onClick={signIn} disabled={!publicKey} className="btn btn-primary">
+            Sign in as mod
           </button>
+        ) : (
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <span className="chip">Signed in as {shortWallet(auth.wallet)}</span>
+            <button onClick={() => loadPending(auth)} disabled={loading} className="btn btn-ghost btn-sm">
+              {loading ? "Loading..." : "Refresh"}
+            </button>
+          </div>
+        )}
+        {error && <p className="font-semibold text-ruby">❌ {error}</p>}
+      </div>
+
+      {auth && !loading && submissions.length === 0 && !error && (
+        <div className="panel flex w-full max-w-md flex-col items-center gap-2 p-8 text-center">
+          <p className="font-display text-3xl text-neon">All clear</p>
+          <p className="text-muted">No pending memes 🎉</p>
         </div>
       )}
 
-      {error && <p className="text-red-400">❌ {error}</p>}
-
-      {auth && !loading && submissions.length === 0 && !error && (
-        <p className="text-gray-400">No pending memes 🎉</p>
-      )}
-
-      <div className="grid gap-6 w-full max-w-4xl sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {submissions.map((s) => (
-          <div key={s.id} className="flex flex-col rounded border border-gray-800 bg-gray-900 overflow-hidden">
+          <div key={s.id} className="panel flex flex-col overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={s.image_url} alt={s.caption || "Meme submission"} className="w-full aspect-square object-contain bg-black" />
-            <div className="flex flex-col gap-2 p-3 flex-1">
+            <img src={s.image_url} alt={s.caption || "Meme submission"} className="aspect-square w-full bg-black object-contain" />
+            <div className="flex flex-1 flex-col gap-3 p-4">
               {s.caption && <p className="break-words">{s.caption}</p>}
-              <p className="text-xs text-gray-500">
-                {shortWallet(s.wallet)} · {new Date(s.created_at).toLocaleString()}
+              <p className="flex flex-wrap items-center gap-2 text-xs text-muted">
+                <span className="chip">{shortWallet(s.wallet)}</span>
+                {new Date(s.created_at).toLocaleString()}
               </p>
-              <div className="flex gap-2 mt-auto">
+              <div className="mt-auto flex gap-3">
                 <button
                   onClick={() => moderate(s.id, "approve")}
                   disabled={busyId === s.id}
-                  className="flex-1 p-2 rounded bg-purple-600 font-bold disabled:opacity-50"
+                  className="btn btn-primary flex-1"
                 >
                   Approve
                 </button>
                 <button
                   onClick={() => moderate(s.id, "reject")}
                   disabled={busyId === s.id}
-                  className="flex-1 p-2 rounded bg-gray-700 font-bold disabled:opacity-50"
+                  className="btn btn-danger flex-1"
                 >
                   Reject
                 </button>

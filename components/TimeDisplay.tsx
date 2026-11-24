@@ -32,7 +32,7 @@ export function UpdatedAgo({ at }: { at: number }) {
   }, []);
 
   return (
-    <span className="text-xs text-gray-500">
+    <span className="text-xs text-muted">
       Updated {now == null ? "recently" : ago(now - at)}
     </span>
   );

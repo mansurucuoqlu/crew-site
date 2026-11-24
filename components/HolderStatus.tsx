@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
-type Result = { wallet: string; text: string };
+type Result = { wallet: string; text: string; holder?: boolean };
 
 export default function HolderStatus() {
   const { publicKey } = useWallet();
@@ -25,7 +25,7 @@ export default function HolderStatus() {
         if (data.error) text = "⚠️ Error: " + data.error;
         else if (data.note) text = "⏳ " + data.note;
         else if (data.holder) text = `✅ Crew member — you hold ${data.balance}`;
-        if (!cancelled) setResult({ wallet, text });
+        if (!cancelled) setResult({ wallet, text, holder: !data.error && !data.note && !!data.holder });
       })
       .catch(() => {
         if (!cancelled) setResult({ wallet, text: "⚠️ Could not check" });
@@ -37,6 +37,9 @@ export default function HolderStatus() {
   }, [wallet]);
 
   if (!wallet) return null;
-  const status = result?.wallet === wallet ? result.text : "Checking...";
-  return <p className="text-lg">{status}</p>;
+  const current = result?.wallet === wallet ? result : null;
+  if (current?.holder) {
+    return <p className="tag tag-green text-sm! normal-case! tracking-normal!">{current.text}</p>;
+  }
+  return <p className="chip text-sm!">{current?.text ?? "Checking..."}</p>;
 }

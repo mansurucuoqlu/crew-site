@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import bs58 from "bs58";
 import ConnectButton from "@/components/ConnectButton";
+import { DAY_MS, formatCountdown, shortAddr } from "@/lib/format";
 
 export type Contest = {
   id: number;
@@ -27,21 +28,8 @@ export type Meme = {
 
 type Phase = "submitting" | "voting" | "ended";
 
-function shortWallet(w: string) {
-  return `${w.slice(0, 4)}…${w.slice(-4)}`;
-}
-
 function voteMessage(wallet: string, id: number) {
   return `CREW vote | Wallet: ${wallet} | Submission: ${id} | Time: ${Date.now()}`;
-}
-
-function formatCountdown(ms: number) {
-  const s = Math.max(0, Math.floor(ms / 1000));
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  return `${d > 0 ? `${d}d ` : ""}${h}h ${m}m ${sec}s`;
 }
 
 export default function ContestView({
@@ -134,81 +122,99 @@ export default function ContestView({
     phase === "ended" &&
     (contest.winner_id != null ? m.id === contest.winner_id : topVotes > 0 && m.votes === topVotes);
 
+  const left = phase === "submitting" ? submitEnds - now : voteEnds - now;
+  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-neon" : "text-muted";
+
   return (
     <>
-      <h1 className="text-4xl font-bold text-center">{contest.theme}</h1>
-      <p className="text-lg text-gray-400">
-        Prize: <span className="text-white font-bold">{contest.prize_amount} $CREW</span>
-      </p>
+      <header className="flex flex-col items-center gap-4 text-center">
+        <span className={`tag ${phase === "voting" ? "tag-green" : phase === "ended" ? "tag-gold" : "tag-green"}`}>
+          {phase !== "ended" && <span className="led" />}
+          {phase === "submitting" ? "Submissions open" : phase === "voting" ? "Voting open" : "Contest ended"}
+        </span>
+        <p className="hud-label">{"// Weekly contest"}</p>
+        <h1 className="font-display text-3xl font-extrabold text-white sm:text-5xl">{contest.theme}</h1>
+      </header>
 
-      <div className="text-center">
-        {phase === "submitting" && (
-          <>
-            <p className="text-purple-400 font-bold">Submissions open</p>
-            <p className="text-sm text-gray-400">Voting opens in {formatCountdown(submitEnds - now)}</p>
-          </>
-        )}
-        {phase === "voting" && (
-          <>
-            <p className="text-purple-400 font-bold">Voting open</p>
-            <p className="text-sm text-gray-400">Voting ends in {formatCountdown(voteEnds - now)}</p>
-          </>
-        )}
-        {phase === "ended" && <p className="text-purple-400 font-bold">Contest ended — final results</p>}
+      <div className="panel grid w-full max-w-3xl divide-line sm:grid-cols-2 sm:divide-x">
+        <div className="flex flex-col gap-2 p-6">
+          <p className="hud-label text-muted!">Prize</p>
+          <p className="font-display text-2xl font-bold text-gold">{contest.prize_amount} $CREW</p>
+        </div>
+        <div className="flex flex-col gap-2 p-6">
+          <p className="hud-label text-muted!">
+            {phase === "submitting" ? "Voting opens in" : phase === "voting" ? "Voting ends in" : "Status"}
+          </p>
+          <p className={`font-display text-2xl font-bold tabular-nums ${phase !== "ended" && left < DAY_MS ? "text-ruby" : "text-white"}`}>
+            {phase === "ended" ? "Final results" : formatCountdown(left)}
+          </p>
+        </div>
       </div>
 
-      {phase === "submitting" && (
-        <Link href="/submit" className="p-3 rounded bg-purple-600 font-bold">
-          Submit your meme
-        </Link>
-      )}
-      {phase === "voting" && <ConnectButton />}
-      {status && <p>{status}</p>}
+      <div className="flex flex-col items-center gap-3">
+        {phase === "submitting" && (
+          <>
+            <Link href="/submit" className="btn btn-primary">Submit your meme</Link>
+            {memes.length > 0 && <p className="text-sm text-muted">Voting isn&apos;t open yet. Here&apos;s what&apos;s in so far.</p>}
+          </>
+        )}
+        {phase === "voting" && <ConnectButton />}
+        {status && <p className={`font-semibold ${statusTone}`}>{status}</p>}
+      </div>
 
       {memes.length === 0 ? (
-        <p className="text-gray-400">No approved memes yet.</p>
+        <div className="panel flex w-full max-w-md flex-col items-center gap-2 p-8 text-center">
+          <p className="font-display text-xl font-bold text-white">No memes yet</p>
+          <p className="text-muted">
+            {phase === "submitting" ? "Be the first to submit one." : "No approved memes in this contest."}
+          </p>
+        </div>
       ) : (
-        <div className="grid gap-6 w-full max-w-4xl sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full gap-8 pt-4 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((m, i) => {
             const winner = isWinner(m);
             const mine = myVote === m.id;
             return (
               <div
                 key={m.id}
-                className={`flex flex-col rounded border overflow-hidden bg-gray-900 ${
-                  winner ? "border-yellow-400 ring-2 ring-yellow-400" : mine ? "border-purple-500" : "border-gray-800"
-                }`}
+                className={`flex flex-col ${winner ? "-translate-y-2 drop-shadow-[0_0_28px_rgba(245,197,66,0.45)]" : ""}`}
               >
+              <div className={`panel panel-hover flex flex-1 flex-col ${winner ? "panel-winner" : mine ? "panel-mine" : ""}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={m.image_url} alt={m.caption || "Meme"} className="w-full aspect-square object-contain bg-black" />
-                <div className="flex flex-col gap-2 p-3 flex-1">
-                  {winner && <p className="text-yellow-400 font-bold">🏆 Winner</p>}
-                  {phase === "ended" && !winner && <p className="text-gray-500 text-sm">#{i + 1}</p>}
+                <img src={m.image_url} alt={m.caption || "Meme"} className="aspect-square w-full bg-black object-contain" />
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  <div className="flex items-center justify-between gap-2">
+                    {winner ? (
+                      <span className="tag tag-gold">🏆 Winner</span>
+                    ) : phase === "ended" ? (
+                      <span className="font-mono text-sm text-muted">#{String(i + 1).padStart(2, "0")}</span>
+                    ) : (
+                      <span />
+                    )}
+                    {phase !== "submitting" && (
+                      <span className="font-display text-xl font-bold text-neon">
+                        {m.votes} <span className="font-mono text-xs tracking-[0.2em]">VOTE{m.votes === 1 ? "" : "S"}</span>
+                      </span>
+                    )}
+                  </div>
                   {m.caption && <p className="break-words">{m.caption}</p>}
-                  <p className="text-xs text-gray-500">by {shortWallet(m.wallet)}</p>
-                  {phase !== "submitting" && (
-                    <p className="font-bold">
-                      {m.votes} vote{m.votes === 1 ? "" : "s"}
-                    </p>
-                  )}
+                  <span className="chip self-start">by {shortAddr(m.wallet)}</span>
                   {phase === "voting" && (
                     <button
                       onClick={() => vote(m.id)}
                       disabled={!wallet || myVote != null || busyId != null || m.wallet === wallet}
-                      className="mt-auto p-2 rounded bg-purple-600 font-bold disabled:opacity-50"
+                      className="btn btn-primary mt-auto"
                     >
                       {mine ? "✓ Your vote" : m.wallet === wallet ? "Your meme" : busyId === m.id ? "Voting..." : "Vote"}
                     </button>
                   )}
-                  {phase === "ended" && mine && <p className="text-purple-400 text-sm">✓ You voted for this</p>}
+                  {phase === "ended" && mine && <span className="tag tag-green self-start">✓ You voted for this</span>}
                 </div>
+              </div>
               </div>
             );
           })}
         </div>
-      )}
-      {phase === "submitting" && memes.length > 0 && (
-        <p className="text-sm text-gray-500">Voting isn&apos;t open yet.</p>
       )}
     </>
   );

@@ -18,7 +18,7 @@ export default function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={copy}
-      className="px-2 py-1 rounded text-xs bg-gray-800 hover:bg-gray-700"
+      className="btn btn-ghost btn-sm"
       aria-label="Copy address"
     >
       {copied ? "Copied!" : "Copy"}
