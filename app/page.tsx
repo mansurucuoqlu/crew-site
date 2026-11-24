@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ConnectButton from "@/components/ConnectButton";
 import HolderStatus from "@/components/HolderStatus";
 
@@ -8,6 +9,9 @@ export default function Home() {
       <p className="text-lg text-gray-400">No dev. No boss. Just the Crew.</p>
       <ConnectButton />
       <HolderStatus />
+      <Link href="/contest" className="p-3 rounded bg-purple-600 font-bold">
+        Meme contest
+      </Link>
     </main>
   );
 }
