@@ -28,7 +28,7 @@ export default function SubmitPage() {
 
     try {
       const wallet = publicKey.toBase58();
-      const message = `CREW submission\nWallet: ${wallet}\nTime: ${Date.now()}`;
+      const message = `CREW submission | Wallet: ${wallet} | Time: ${Date.now()}`;
       const sig = await signMessage(new TextEncoder().encode(message));
 
       setStatus("Uploading...");

@@ -3,33 +3,40 @@
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
+type Result = { wallet: string; text: string };
+
 export default function HolderStatus() {
   const { publicKey } = useWallet();
-  const [status, setStatus] = useState<string>("");
+  const wallet = publicKey?.toBase58();
+  const [result, setResult] = useState<Result | null>(null);
 
   useEffect(() => {
-    if (!publicKey) {
-      setStatus("");
-      return;
-    }
-
-    setStatus("Checking...");
+    if (!wallet) return;
+    let cancelled = false;
 
     fetch("/api/check-holder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ wallet: publicKey.toBase58() }),
+      body: JSON.stringify({ wallet }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.error) setStatus("⚠️ Error: " + data.error);
-        else if (data.note) setStatus("⏳ " + data.note);
-        else if (data.holder) setStatus(`✅ Crew member — you hold ${data.balance}`);
-        else setStatus("❌ Not a holder yet");
+        let text = "❌ Not a holder yet";
+        if (data.error) text = "⚠️ Error: " + data.error;
+        else if (data.note) text = "⏳ " + data.note;
+        else if (data.holder) text = `✅ Crew member — you hold ${data.balance}`;
+        if (!cancelled) setResult({ wallet, text });
       })
-      .catch(() => setStatus("⚠️ Could not check"));
-  }, [publicKey]);
+      .catch(() => {
+        if (!cancelled) setResult({ wallet, text: "⚠️ Could not check" });
+      });
 
-  if (!status) return null;
+    return () => {
+      cancelled = true;
+    };
+  }, [wallet]);
+
+  if (!wallet) return null;
+  const status = result?.wallet === wallet ? result.text : "Checking...";
   return <p className="text-lg">{status}</p>;
 }
