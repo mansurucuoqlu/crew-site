@@ -3,7 +3,6 @@ import { connection } from "next/server";
 import Link from "next/link";
 import ConnectButton from "@/components/ConnectButton";
 import HolderStatus from "@/components/HolderStatus";
-import HeroCoin from "@/components/HeroCoin";
 import CopyButton from "@/components/CopyButton";
 import CaChip from "@/components/CaChip";
 import ContestCountdown from "@/components/ContestCountdown";
@@ -35,7 +34,7 @@ function SectionHead({ n, label, title, accent }: { n: string; label: string; ti
     <div className="flex flex-col gap-3">
       <p className="hud-label">{n} — {label}</p>
       <h2 className="font-display text-3xl font-extrabold tracking-wide text-white sm:text-5xl">
-        {title} <span className="text-neon text-glow">{accent}</span>
+        {title} <span className="text-chrome">{accent}</span>
       </h2>
     </div>
   );
@@ -46,25 +45,25 @@ export default function Home() {
     <main>
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 top-0 w-1.5 bg-gradient-to-b from-neon via-lime to-transparent" aria-hidden />
-        <div className="mx-auto grid min-h-[min(calc(100dvh-110px),820px)] max-w-7xl items-center gap-8 px-4 pb-16 pt-8 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:gap-x-10 lg:gap-y-0">
-          {/* Phone order: coin, text, specs. Desktop: text left, coin + specs right */}
-          <div className="order-2 flex flex-col gap-6 lg:order-none lg:col-start-1 lg:row-span-2 lg:row-start-1">
-            <span className="tag tag-green self-start">
+        <div className="absolute bottom-0 left-0 top-0 w-1.5 bg-gradient-to-b from-accent via-silver/40 to-transparent" aria-hidden />
+        {/* Text sits right on the full-page background picture */}
+        <div className="mx-auto flex min-h-[calc(100dvh-200px)] max-w-7xl flex-col justify-end px-4 pb-10 pt-[38vh] sm:px-6 lg:justify-center lg:pt-10">
+          <div className="flex max-w-2xl flex-col gap-6">
+            <span className="tag tag-accent self-start">
               <span className="led" /> $CREW on · Solana
             </span>
 
             <div>
-              <p className="mb-2 font-mono text-xs tracking-[0.5em] text-neon">COMMUNITY EDITION</p>
+              <p className="mb-2 font-mono text-xs tracking-[0.5em] text-silver">COMMUNITY EDITION</p>
               <h1 className="font-display text-6xl font-black leading-none tracking-[0.06em] text-white sm:text-8xl">
-                $<span className="text-neon text-glow">CREW</span>
+                $<span className="text-chrome">CREW</span>
               </h1>
             </div>
 
-            <p className="max-w-2xl text-xl font-medium leading-snug text-mist sm:text-2xl">
+            <p className="max-w-xl text-xl font-medium leading-snug text-mist sm:text-2xl">
               A community-run Solana memecoin. Weekly meme contests, holder votes, and a treasury anyone can audit.
             </p>
-            <p className="font-display text-[11px] uppercase tracking-[0.38em] text-neon sm:text-xs">
+            <p className="font-display text-[11px] uppercase tracking-[0.38em] text-accent sm:text-xs">
               No dev · No boss · Just the Crew
             </p>
 
@@ -87,23 +86,17 @@ export default function Home() {
               <HolderStatus />
             </div>
           </div>
+        </div>
 
-          <div className="order-1 flex justify-center lg:order-none lg:col-start-2 lg:row-start-1 lg:self-end">
-            <HeroCoin />
-          </div>
-          <div className="order-3 flex justify-center lg:order-none lg:col-start-2 lg:row-start-2 lg:justify-end lg:self-start">
-            <div className="panel w-full max-w-sm p-5 lg:-mt-16">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="hud-label">Crew specs</span>
-                <span className="font-mono text-[10px] text-muted">REV 01</span>
+        {/* Specs bar */}
+        <div className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
+          <div className="panel grid grid-cols-2 divide-line sm:grid-cols-3 lg:grid-cols-6 lg:divide-x">
+            {SPECS.map(([k, v, hi]) => (
+              <div key={k} className="flex flex-col gap-1 border-b border-line p-4 lg:border-b-0">
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">{k}</span>
+                <span className={`font-display text-sm font-bold ${hi ? "text-accent" : "text-white"}`}>{v}</span>
               </div>
-              {SPECS.map(([k, v, hi]) => (
-                <div key={k} className="spec-row">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{k}</span>
-                  <span className={`font-display text-sm font-bold ${hi ? "text-neon" : "text-white"}`}>{v}</span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -115,7 +108,7 @@ export default function Home() {
           <div className="grid gap-5 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <div key={s.title} className="panel panel-hover flex flex-col gap-3 p-7">
-                <p className="font-mono text-xs tracking-[0.3em] text-neon">STEP 0{i + 1}</p>
+                <p className="font-mono text-xs tracking-[0.3em] text-accent">STEP 0{i + 1}</p>
                 <h3 className="font-display text-xl font-bold text-white">{s.title}</h3>
                 <p className="text-lg leading-snug text-muted">{s.body}</p>
               </div>
@@ -137,7 +130,7 @@ export default function Home() {
             <SectionHead n="03" label="Transparency" title="Fully" accent="on-chain" />
             <div className="panel flex flex-col gap-6 p-7 sm:p-10 md:flex-row md:items-center md:justify-between">
               <div className="flex max-w-xl flex-col gap-3">
-                <span className="tag tag-green self-start"><span className="led" /> Public treasury</span>
+                <span className="tag tag-accent self-start"><span className="led" /> Public treasury</span>
                 <p className="text-xl leading-snug text-mist">
                   Every prize is paid from one public wallet. Check the balance and every payout yourself.
                 </p>
@@ -162,7 +155,7 @@ export default function Home() {
         <section className="panel flex flex-col items-center gap-6 p-10 text-center sm:p-14">
           <p className="hud-label">04 — Community</p>
           <h2 className="font-display text-3xl font-extrabold text-white sm:text-5xl">
-            Join the <span className="text-neon text-glow">Crew</span>
+            Join the <span className="text-chrome">Crew</span>
           </h2>
           <p className="max-w-xl text-lg text-muted">No dev. No boss. Just a bunch of people making memes and voting on them.</p>
           <div className="flex flex-wrap justify-center gap-3">
@@ -207,11 +200,11 @@ async function LiveStrip() {
       </div>
       <div className={cell}>
         <p className="hud-label text-muted!">Prize</p>
-        <p className="font-display text-2xl font-bold text-gold">{contest ? `${contest.prize_amount} $CREW` : "—"}</p>
+        <p className="font-display text-2xl font-bold text-white">{contest ? `${contest.prize_amount} $CREW` : "—"}</p>
       </div>
       <Link href="/treasury" className={`${cell} group`}>
         <p className="hud-label text-muted!">Treasury</p>
-        <p className="font-display text-2xl font-bold text-neon group-hover:text-glow">
+        <p className="font-display text-2xl font-bold text-accent group-hover:text-white">
           {chain ? `${chain.sol.toLocaleString("en-US", { maximumFractionDigits: 3 })} SOL` : "—"}
         </p>
       </Link>

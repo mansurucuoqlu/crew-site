@@ -35,10 +35,10 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 py-10 sm:px-6 md:flex-row md:justify-between">
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/coin.svg" alt="" className="h-9 w-9 rounded-full ring-2 ring-neon/70" />
+          <img src="/crew-logo.jpg" alt="" className="h-9 w-9 rounded-full object-cover ring-2 ring-accent/70" />
           <div className="leading-none">
             <p className="font-display text-sm font-extrabold tracking-[0.22em] text-white">CREW</p>
-            <p className="mt-1 font-mono text-[10px] tracking-[0.32em] text-neon">NO DEV · NO BOSS</p>
+            <p className="mt-1 font-mono text-[10px] tracking-[0.32em] text-accent">NO DEV · NO BOSS</p>
           </div>
         </div>
         <div className="flex gap-3">

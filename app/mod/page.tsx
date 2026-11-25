@@ -98,7 +98,7 @@ export default function ModPage() {
       <header className="flex flex-col items-center gap-2 text-center">
         <span className="tag tag-red"><span className="led" /> Mods only</span>
         <h1 className="font-display text-3xl font-extrabold text-white sm:text-5xl">
-          Mod <span className="text-neon text-glow">queue</span>
+          Mod <span className="text-chrome">queue</span>
         </h1>
       </header>
 
@@ -121,7 +121,7 @@ export default function ModPage() {
 
       {auth && !loading && submissions.length === 0 && !error && (
         <div className="panel flex w-full max-w-md flex-col items-center gap-2 p-8 text-center">
-          <p className="font-display text-3xl text-neon">All clear</p>
+          <p className="font-display text-3xl text-accent">All clear</p>
           <p className="text-muted">No pending memes 🎉</p>
         </div>
       )}

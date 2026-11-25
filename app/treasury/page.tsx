@@ -24,9 +24,9 @@ function fmt(n: number) {
 export default function TreasuryPage() {
   return (
     <main className="page">
-      <span className="tag tag-green"><span className="led" /> Public &amp; on-chain</span>
+      <span className="tag tag-accent"><span className="led" /> Public &amp; on-chain</span>
       <h1 className="font-display text-center text-3xl font-extrabold text-white sm:text-5xl">
-        Crew <span className="text-neon text-glow">Treasury</span>
+        Crew <span className="text-chrome">Treasury</span>
       </h1>
       {TREASURY ? (
         <div className="flex flex-wrap items-center justify-center gap-3">
@@ -99,12 +99,12 @@ function Balances({ chain }: { chain: TreasuryData }) {
       <div className="grid gap-3 sm:grid-cols-3">
         <div className="clip-md bg-background/70 p-4 shadow-[inset_0_0_0_1px_var(--line)]">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted">SOL</p>
-          <p className="font-display text-3xl font-bold text-neon text-glow">{fmt(chain.sol)}</p>
+          <p className="font-display text-3xl font-bold text-chrome">{fmt(chain.sol)}</p>
         </div>
         {chain.tokens.map((t) => (
           <div key={t.mint} className="clip-md bg-background/70 p-4 shadow-[inset_0_0_0_1px_var(--line)]">
             <p className="text-xs font-semibold uppercase tracking-widest text-muted" title={t.mint}>{t.symbol}</p>
-            <p className="font-display text-3xl font-bold text-neon text-glow">{fmt(t.amount)}</p>
+            <p className="font-display text-3xl font-bold text-chrome">{fmt(t.amount)}</p>
           </div>
         ))}
       </div>
@@ -132,27 +132,27 @@ function Activity({
               <li
                 key={tx.signature}
                 className={`flex flex-wrap items-center gap-x-4 gap-y-1 border-l-2 bg-background/60 px-3 py-2.5 text-sm ${
-                  tx.direction === "In" ? "border-neon" : tx.direction === "Out" ? "border-ruby" : "border-line"
+                  tx.direction === "In" ? "border-accent" : tx.direction === "Out" ? "border-ruby" : "border-line"
                 }`}
               >
                 <span className="w-40 text-muted"><LocalTime ms={tx.timestamp} /></span>
-                <span className={`tag w-14 justify-center ${tx.direction === "In" ? "tag-green" : tx.direction === "Out" ? "tag-red" : ""}`}>
+                <span className={`tag w-14 justify-center ${tx.direction === "In" ? "tag-accent" : tx.direction === "Out" ? "tag-red" : ""}`}>
                   {tx.direction}
                 </span>
-                <span className={`flex-1 font-semibold ${tx.direction === "In" ? "text-neon" : tx.direction === "Out" ? "text-ruby" : ""}`}>
+                <span className={`flex-1 font-semibold ${tx.direction === "In" ? "text-accent" : tx.direction === "Out" ? "text-ruby" : ""}`}>
                   {tx.amounts.length === 0
                     ? "—"
                     : tx.amounts
                         .map((a) => `${a.amount > 0 ? "+" : ""}${fmt(a.amount)} ${a.symbol}`)
                         .join(", ")}
                   {tx.failed && <span className="ml-2 text-muted">(failed)</span>}
-                  {reason && <span className="ml-2 font-normal text-gold">· {reason}</span>}
+                  {reason && <span className="ml-2 font-normal text-accent">· {reason}</span>}
                 </span>
                 <a
                   href={`https://solscan.io/tx/${tx.signature}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-mist hover:text-gold"
+                  className="font-semibold text-mist hover:text-accent"
                 >
                   Solscan ↗
                 </a>
@@ -176,16 +176,16 @@ function Payouts({ payouts, failed }: { payouts: Payout[]; failed: boolean }) {
       ) : (
         <ul className="flex flex-col gap-2">
           {payouts.map((p) => (
-            <li key={p.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-l-2 border-gold bg-background/60 px-3 py-2.5 text-sm">
+            <li key={p.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-l-2 border-silver bg-background/60 px-3 py-2.5 text-sm">
               <span className="flex-1 min-w-48 font-bold">{p.reason || "Payout"}</span>
               <span className="chip" title={p.to_wallet}>→ {shortAddr(p.to_wallet)}</span>
-              <span className="font-bold text-gold">{fmt(Number(p.amount))} $CREW</span>
+              <span className="font-bold text-white">{fmt(Number(p.amount))} $CREW</span>
               <span className="text-muted"><LocalTime ms={Date.parse(p.created_at)} /></span>
               <a
                 href={`https://solscan.io/tx/${p.tx_signature}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-mist hover:text-gold"
+                className="font-semibold text-mist hover:text-accent"
               >
                 Solscan ↗
               </a>

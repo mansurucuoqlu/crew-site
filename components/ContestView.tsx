@@ -123,12 +123,12 @@ export default function ContestView({
     (contest.winner_id != null ? m.id === contest.winner_id : topVotes > 0 && m.votes === topVotes);
 
   const left = phase === "submitting" ? submitEnds - now : voteEnds - now;
-  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-neon" : "text-muted";
+  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-accent" : "text-muted";
 
   return (
     <>
       <header className="flex flex-col items-center gap-4 text-center">
-        <span className={`tag ${phase === "voting" ? "tag-green" : phase === "ended" ? "tag-gold" : "tag-green"}`}>
+        <span className={`tag ${phase === "voting" ? "tag-accent" : phase === "ended" ? "" : "tag-accent"}`}>
           {phase !== "ended" && <span className="led" />}
           {phase === "submitting" ? "Submissions open" : phase === "voting" ? "Voting open" : "Contest ended"}
         </span>
@@ -139,7 +139,7 @@ export default function ContestView({
       <div className="panel grid w-full max-w-3xl divide-line sm:grid-cols-2 sm:divide-x">
         <div className="flex flex-col gap-2 p-6">
           <p className="hud-label text-muted!">Prize</p>
-          <p className="font-display text-2xl font-bold text-gold">{contest.prize_amount} $CREW</p>
+          <p className="font-display text-2xl font-bold text-white">{contest.prize_amount} $CREW</p>
         </div>
         <div className="flex flex-col gap-2 p-6">
           <p className="hud-label text-muted!">
@@ -177,7 +177,7 @@ export default function ContestView({
             return (
               <div
                 key={m.id}
-                className={`flex flex-col ${winner ? "-translate-y-2 drop-shadow-[0_0_28px_rgba(245,197,66,0.45)]" : ""}`}
+                className={`flex flex-col ${winner ? "-translate-y-2 drop-shadow-[0_0_28px_rgba(255,255,255,0.3)]" : ""}`}
               >
               <div className={`panel panel-hover flex flex-1 flex-col ${winner ? "panel-winner" : mine ? "panel-mine" : ""}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -185,14 +185,14 @@ export default function ContestView({
                 <div className="flex flex-1 flex-col gap-3 p-5">
                   <div className="flex items-center justify-between gap-2">
                     {winner ? (
-                      <span className="tag tag-gold">🏆 Winner</span>
+                      <span className="tag tag-solid">🏆 Winner</span>
                     ) : phase === "ended" ? (
                       <span className="font-mono text-sm text-muted">#{String(i + 1).padStart(2, "0")}</span>
                     ) : (
                       <span />
                     )}
                     {phase !== "submitting" && (
-                      <span className="font-display text-xl font-bold text-neon">
+                      <span className="font-display text-xl font-bold text-accent">
                         {m.votes} <span className="font-mono text-xs tracking-[0.2em]">VOTE{m.votes === 1 ? "" : "S"}</span>
                       </span>
                     )}
@@ -208,7 +208,7 @@ export default function ContestView({
                       {mine ? "✓ Your vote" : m.wallet === wallet ? "Your meme" : busyId === m.id ? "Voting..." : "Vote"}
                     </button>
                   )}
-                  {phase === "ended" && mine && <span className="tag tag-green self-start">✓ You voted for this</span>}
+                  {phase === "ended" && mine && <span className="tag tag-accent self-start">✓ You voted for this</span>}
                 </div>
               </div>
               </div>

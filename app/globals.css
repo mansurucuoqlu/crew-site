@@ -2,23 +2,22 @@
 
 /* ============================================================
    $CREW design tokens — every color lives here
-   HUD / terminal look: neon lime on near-black, chamfered panels
+   HUD / terminal look: black and gray only, chamfered panels
    ============================================================ */
 :root {
-  --bg: #050805;
-  --ink: #080b06;
-  --panel: #0b1109;
-  --card: #10170c;
-  --line: #1e2f14;
-  --mist: #d7e8c4; /* body text */
-  --muted: #93a67c;
+  --bg: #060707;
+  --ink: #0a0b0b;
+  --panel: #0e1011;
+  --card: #15181a;
+  --line: #2a2e31;
+  --mist: #e4e7ea; /* body text (light gray) */
+  --muted: #9aa0a8; /* secondary text (gray) */
+  --silver: #c8ccd2;
 
-  --neon: #84d40b; /* primary accent */
-  --lime: #a8e600;
-  --glow: #c8ff3a;
+  --accent: #d9dde2; /* primary accent: light silver */
+  --accent-hi: #ffffff; /* hover / brightest */
 
-  --gold: #f5c542; /* prizes + winner only */
-  --ruby: #ff4d5e; /* errors, reject, "Out" */
+  --ruby: #ff4d5e; /* only for errors, reject, "Out" */
 }
 
 @theme inline {
@@ -28,10 +27,9 @@
   --color-line: var(--line);
   --color-mist: var(--mist);
   --color-muted: var(--muted);
-  --color-neon: var(--neon);
-  --color-lime: var(--lime);
-  --color-glow: var(--glow);
-  --color-gold: var(--gold);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-silver: var(--silver);
   --color-ruby: var(--ruby);
   --font-display: var(--font-orbitron), sans-serif;
   --font-sans: var(--font-rajdhani), sans-serif;
@@ -47,7 +45,7 @@ html {
 }
 
 body {
-  background: var(--bg);
+  /* No background here: it would paint over the fixed page background (html has the color) */
   color: var(--mist);
   font-family: var(--font-rajdhani), sans-serif;
   font-size: 1.0625rem;
@@ -57,7 +55,7 @@ body {
 }
 
 ::selection {
-  background: var(--neon);
+  background: var(--accent);
   color: var(--bg);
 }
 
@@ -73,7 +71,7 @@ body {
     font-size: 0.7rem;
     letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: var(--neon);
+    color: var(--accent);
   }
 
   .page {
@@ -120,22 +118,22 @@ body {
     letter-spacing: 0.18em;
   }
   .btn-primary {
-    background: var(--neon);
+    background: var(--accent);
     color: var(--bg);
-    box-shadow: 0 0 28px rgba(132, 212, 11, 0.35);
+    box-shadow: 0 0 22px rgba(220, 224, 228, 0.18);
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--lime);
-    box-shadow: 0 0 44px rgba(168, 230, 0, 0.5);
+    background: var(--accent-hi);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.28);
   }
   .btn-ghost {
-    background: rgba(5, 8, 5, 0.6);
-    color: var(--neon);
-    box-shadow: inset 0 0 0 1px rgba(132, 212, 11, 0.55);
+    background: rgba(6, 7, 7, 0.6);
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(220, 224, 228, 0.55);
   }
   .btn-ghost:hover:not(:disabled) {
-    background: rgba(132, 212, 11, 0.1);
-    color: var(--glow);
+    background: rgba(220, 224, 228, 0.1);
+    color: var(--accent-hi);
   }
   .btn-danger {
     background: rgba(255, 77, 94, 0.08);
@@ -154,7 +152,7 @@ body {
     cursor: not-allowed;
   }
   .btn:focus-visible {
-    outline: 2px solid var(--glow);
+    outline: 2px solid var(--accent-hi);
     outline-offset: 3px;
   }
   /* Light sweep across buttons on hover */
@@ -176,28 +174,28 @@ body {
   /* ---------- Panels ---------- */
   .panel {
     position: relative;
-    background: linear-gradient(160deg, rgba(16, 23, 12, 0.92), rgba(8, 11, 6, 0.92));
+    background: linear-gradient(160deg, rgba(24, 27, 29, 0.94), rgba(10, 11, 12, 0.94));
     box-shadow:
       inset 0 0 0 1px var(--line),
-      inset 0 0 40px rgba(132, 212, 11, 0.05);
+      inset 0 0 40px rgba(220, 224, 228, 0.03);
     clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
     transition: box-shadow 0.25s;
   }
   .panel-hover:hover {
     box-shadow:
-      inset 0 0 0 1px rgba(132, 212, 11, 0.55),
-      inset 0 0 50px rgba(132, 212, 11, 0.09);
+      inset 0 0 0 1px rgba(220, 224, 228, 0.55),
+      inset 0 0 50px rgba(220, 224, 228, 0.09);
   }
   .panel-winner {
-    background: linear-gradient(160deg, rgba(40, 32, 8, 0.95), rgba(10, 9, 4, 0.95));
+    background: linear-gradient(160deg, rgba(40, 43, 46, 0.97), rgba(12, 13, 14, 0.97));
     box-shadow:
-      inset 0 0 0 2px var(--gold),
-      inset 0 0 60px rgba(245, 197, 66, 0.15);
+      inset 0 0 0 2px var(--accent),
+      inset 0 0 70px rgba(220, 224, 228, 0.2);
   }
   .panel-mine {
     box-shadow:
-      inset 0 0 0 1px var(--neon),
-      inset 0 0 50px rgba(132, 212, 11, 0.1);
+      inset 0 0 0 1px var(--accent),
+      inset 0 0 50px rgba(220, 224, 228, 0.1);
   }
 
   /* ---------- Tags, chips ---------- */
@@ -211,11 +209,11 @@ body {
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--muted);
-    background: rgba(5, 8, 5, 0.6);
-    box-shadow: inset 0 0 0 1px rgba(147, 166, 124, 0.35);
+    background: rgba(6, 7, 7, 0.6);
+    box-shadow: inset 0 0 0 1px rgba(154, 160, 168, 0.35);
   }
-  .tag-green { color: var(--neon); box-shadow: inset 0 0 0 1px rgba(132, 212, 11, 0.45); }
-  .tag-gold { color: var(--gold); box-shadow: inset 0 0 0 1px rgba(245, 197, 66, 0.6); }
+  .tag-accent { color: var(--accent); box-shadow: inset 0 0 0 1px rgba(220, 224, 228, 0.45); }
+  .tag-solid { color: var(--bg); background: var(--accent); box-shadow: 0 0 18px rgba(220, 224, 228, 0.45); }
   .tag-red { color: var(--ruby); box-shadow: inset 0 0 0 1px rgba(255, 77, 94, 0.55); }
 
   /* Pulsing status light */
@@ -236,7 +234,7 @@ body {
     font-family: var(--font-techmono), monospace;
     font-size: 0.8rem;
     color: var(--mist);
-    background: rgba(5, 8, 5, 0.7);
+    background: rgba(6, 7, 7, 0.7);
     box-shadow: inset 0 0 0 1px var(--line);
   }
 
@@ -257,7 +255,7 @@ body {
   .field {
     width: 100%;
     padding: 0.8rem 0.9rem;
-    background: rgba(5, 8, 5, 0.8);
+    background: rgba(6, 7, 7, 0.8);
     color: var(--mist);
     font-family: var(--font-techmono), monospace;
     font-size: 0.9rem;
@@ -266,13 +264,13 @@ body {
   }
   .field:focus {
     outline: none;
-    box-shadow: inset 0 0 0 1px var(--neon);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
   .field::file-selector-button {
     margin-right: 0.75rem;
     padding: 0.4rem 0.8rem;
     border: 0;
-    background: var(--neon);
+    background: var(--accent);
     color: var(--bg);
     font-family: var(--font-orbitron), sans-serif;
     font-size: 0.65rem;
@@ -282,33 +280,43 @@ body {
     cursor: pointer;
   }
 
-  .neon-line {
+  .accent-line {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--neon) 20%, var(--glow) 50%, var(--neon) 80%, transparent);
+    background: linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent-hi) 50%, var(--accent) 80%, transparent);
     opacity: 0.6;
   }
 
+  /* Brushed-metal gray gradient for highlighted heading words */
+  .text-chrome {
+    background: linear-gradient(180deg, #ffffff 0%, #c8ccd2 45%, #7d838b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.18));
+  }
   .text-glow {
-    text-shadow: 0 0 24px rgba(132, 212, 11, 0.55);
+    text-shadow: 0 0 20px rgba(220, 224, 228, 0.25);
   }
 
-  /* Soft glow behind the hero coin */
-  .coin-glow {
-    background: radial-gradient(circle, rgba(132, 212, 11, 0.28), rgba(245, 197, 66, 0.1) 40%, transparent 68%);
-    filter: blur(14px);
-  }
 
   /* ---------- Background layers (fixed behind everything) ---------- */
-  .bg-glows {
+  /* Darkens the background picture so text on top stays readable:
+     left side (headline) and bottom are darkest */
+  .bg-shade {
     background:
-      radial-gradient(ellipse 80% 50% at 12% -10%, rgba(132, 212, 11, 0.2), transparent 55%),
-      radial-gradient(ellipse 60% 40% at 92% 8%, rgba(30, 60, 90, 0.16), transparent 50%),
-      radial-gradient(ellipse 50% 40% at 70% 100%, rgba(132, 212, 11, 0.07), transparent 55%);
+      linear-gradient(180deg, rgba(6, 7, 7, 0.55) 0%, rgba(6, 7, 7, 0.1) 22%, rgba(6, 7, 7, 0.15) 55%, rgba(6, 7, 7, 0.95) 100%),
+      linear-gradient(90deg, rgba(6, 7, 7, 0.92) 0%, rgba(6, 7, 7, 0.7) 32%, rgba(6, 7, 7, 0.15) 65%, rgba(6, 7, 7, 0.05) 100%);
+  }
+  @media (max-width: 1023px) {
+    /* On phones the text sits over the middle of the picture, so shade it evenly */
+    .bg-shade {
+      background: linear-gradient(180deg, rgba(6, 7, 7, 0.45) 0%, rgba(6, 7, 7, 0.6) 40%, rgba(6, 7, 7, 0.95) 100%);
+    }
   }
   .bg-grid {
     background-image:
-      linear-gradient(rgba(132, 212, 11, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(132, 212, 11, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(220, 224, 228, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220, 224, 228, 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
   }
   .scanlines {
@@ -343,14 +351,14 @@ body {
 }
 
 /* ============================================================
-   Wallet adapter button → neon chamfered button
+   Wallet adapter button → silver chamfered button
    (unlayered so it beats the library's own CSS)
    ============================================================ */
 .wallet-adapter-button.wallet-adapter-button-trigger {
   height: auto;
   padding: 0.75rem 1.25rem;
   border-radius: 0;
-  background: var(--neon) !important;
+  background: var(--accent) !important;
   color: var(--bg);
   font-family: var(--font-orbitron), sans-serif;
   font-size: 0.7rem;
@@ -359,11 +367,11 @@ body {
   text-transform: uppercase;
   line-height: 1.2;
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-  box-shadow: 0 0 28px rgba(132, 212, 11, 0.35);
+  box-shadow: 0 0 22px rgba(220, 224, 228, 0.18);
   transition: background-color 0.2s;
 }
 .wallet-adapter-button.wallet-adapter-button-trigger:not([disabled]):hover {
-  background: var(--lime) !important;
+  background: var(--accent-hi) !important;
 }
 .wallet-adapter-button-start-icon,
 .wallet-adapter-button-start-icon img {

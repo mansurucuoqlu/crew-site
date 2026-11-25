@@ -1,15 +1,17 @@
-// Fixed background layers: glows, grid, animated circuit traces, scanlines
+import Background from "@/components/Background";
+
+// Fixed background layers: bulls picture, shade, grid, animated circuit traces, scanlines
 export default function Backdrop() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
-      <div className="bg-glows absolute inset-0" />
-      <div className="bg-grid absolute inset-0 opacity-80" />
-      <svg className="absolute inset-0 h-full w-full opacity-40">
+      <Background />
+      <div className="bg-grid absolute inset-0 opacity-50" />
+      <svg className="absolute inset-0 h-full w-full opacity-30">
         <defs>
           <linearGradient id="trace" x1="0" x2="1">
-            <stop offset="0%" stopColor="#84d40b" stopOpacity="0" />
-            <stop offset="50%" stopColor="#a8e600" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#84d40b" stopOpacity="0" />
+            <stop offset="0%" stopColor="#d9dde2" stopOpacity="0" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#d9dde2" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path className="circuit-line" d="M0 140 H200 V240 H440 V100 H760" fill="none" stroke="url(#trace)" strokeWidth="1.2" />

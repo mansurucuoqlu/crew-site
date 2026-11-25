@@ -49,14 +49,14 @@ export default function SubmitPage() {
     }
   }
 
-  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-neon" : "text-muted";
+  const statusTone = status.startsWith("❌") ? "text-ruby" : status.startsWith("✅") ? "text-accent" : "text-muted";
 
   return (
     <main className="page">
       <header className="flex flex-col items-center gap-2 text-center">
-        <span className="tag tag-green"><span className="led" /> Weekly contest</span>
+        <span className="tag tag-accent"><span className="led" /> Weekly contest</span>
         <h1 className="font-display text-3xl font-extrabold text-white sm:text-5xl">
-          Submit your <span className="text-neon text-glow">meme</span>
+          Submit your <span className="text-chrome">meme</span>
         </h1>
         <p className="text-muted">One meme per contest. A mod approves it before it shows up.</p>
       </header>

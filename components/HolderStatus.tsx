@@ -39,7 +39,7 @@ export default function HolderStatus() {
   if (!wallet) return null;
   const current = result?.wallet === wallet ? result : null;
   if (current?.holder) {
-    return <p className="tag tag-green text-sm! normal-case! tracking-normal!">{current.text}</p>;
+    return <p className="tag tag-accent text-sm! normal-case! tracking-normal!">{current.text}</p>;
   }
   return <p className="chip text-sm!">{current?.text ?? "Checking..."}</p>;
 }
