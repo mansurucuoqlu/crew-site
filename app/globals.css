@@ -391,6 +391,11 @@ body {
   .nav-wallet .wallet-adapter-button-start-icon {
     display: none;
   }
+  .nav-wallet .btn {
+    padding: 0.55rem 0.8rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
 }
 
 /* ============================================================
